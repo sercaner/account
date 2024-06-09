@@ -22,7 +22,7 @@ data class Transaction(
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = [CascadeType.ALL])
     @JoinColumn(name = "account_id", nullable = false)
-    val account: Account?
+    val account: Account
 
 ) {
     override fun equals(other: Any?): Boolean {
