@@ -40,6 +40,14 @@ data class Transaction(
         return true
     }
 
+    constructor(amount: BigDecimal, account: Account) : this(
+        id = null,
+        amount = amount,
+        transactionDate = LocalDateTime.now(),
+        transactionType = TransactionType.INITIAL,
+        account = account
+    )
+
     override fun hashCode(): Int {
         var result = id?.hashCode() ?: 0
         result = 31 * result + (transactionType?.hashCode() ?: 0)
