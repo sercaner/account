@@ -1,6 +1,11 @@
 package com.sercaner.account.controller;
 
+import com.sercaner.account.dto.AccountDto;
+import com.sercaner.account.dto.CreateAccountRequest;
 import com.sercaner.account.service.AccountService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,5 +17,10 @@ public class AccountController {
 
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    @PostMapping
+    public ResponseEntity<AccountDto> createAccount(@RequestBody CreateAccountRequest request) {
+        return ResponseEntity.ok(accountService.createAccount(request));
     }
 }

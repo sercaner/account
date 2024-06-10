@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 @Entity
 data class Transaction(
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     val id: String?,
     val transactionType: TransactionType? = TransactionType.INITIAL,
     val amount: BigDecimal?,

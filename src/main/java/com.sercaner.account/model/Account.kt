@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 data class Account(
 
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = "",
     val balance: BigDecimal? = BigDecimal.ZERO,
     val creationDate: LocalDateTime,
