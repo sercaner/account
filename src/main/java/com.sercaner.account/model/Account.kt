@@ -19,7 +19,7 @@ data class Account(
     val customer: Customer?,
 
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     val transaction: Set<Transaction> = HashSet()
 ) {
     constructor(customer: Customer, balance: BigDecimal, creationDate: LocalDateTime) : this(

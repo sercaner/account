@@ -6,12 +6,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.HashSet;
 
 @SpringBootApplication
 public class AccountApplication implements CommandLineRunner {
 
-	private CustomerRepository customerRepository;
+	private final CustomerRepository customerRepository;
 
 	public AccountApplication(CustomerRepository customerRepository) {
 		this.customerRepository = customerRepository;
@@ -23,7 +22,9 @@ public class AccountApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Customer customer = customerRepository.save(new Customer("","Sercan", "Er", new HashSet<>()));
-		System.out.println(customer);
+
+		Customer customer = customerRepository.save(new Customer("Sercan", "Er"));
+        System.out.println(customer);
 	}
+
 }
