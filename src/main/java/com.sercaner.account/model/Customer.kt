@@ -10,7 +10,7 @@ import jakarta.persistence.OneToMany
 @Entity
 data class Customer(
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     val id: String?,
     val name: String?,
     val surname: String?,
@@ -18,6 +18,10 @@ data class Customer(
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     val accounts: Set<Account>?
 ) {
+    constructor(name: String, surname: String) : this("", name, surname, HashSet())
+
+
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -2,15 +2,16 @@ package com.sercaner.account.model
 
 import jakarta.persistence.*
 import org.hibernate.annotations.GenericGenerator
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
 data class Account(
 
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
-    val id: String?,
-    val balance: Double? = 0.0,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: String? = "",
+    val balance: BigDecimal? = BigDecimal.ZERO,
     val creationDate: LocalDateTime,
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
@@ -18,9 +19,15 @@ data class Account(
     val customer: Customer?,
 
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-    val transactions: Set<Transaction>?
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    val transaction: Set<Transaction> = HashSet()
 ) {
+    constructor(customer: Customer, balance: BigDecimal, creationDate: LocalDateTime) : this(
+        "",
+        customer = customer,
+        balance = balance,
+        creationDate = creationDate
+    )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -32,7 +39,7 @@ data class Account(
         if (balance != other.balance) return false
         if (creationDate != other.creationDate) return false
         if (customer != other.customer) return false
-        if (transactions != other.transactions) return false
+        if (transaction != other.transaction) return false
 
         return true
     }
@@ -42,7 +49,7 @@ data class Account(
         result = 31 * result + (balance?.hashCode() ?: 0)
         result = 31 * result + creationDate.hashCode()
         result = 31 * result + (customer?.hashCode() ?: 0)
-       // result = 31 * result + (transactions?.hashCode() ?: 0) because many transaction
+        // result = 31 * result + (transactions?.hashCode() ?: 0) because many transaction
         return result
     }
 }

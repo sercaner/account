@@ -14,15 +14,15 @@ import java.time.LocalDateTime
 @Entity
 data class Transaction(
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     val id: String?,
     val transactionType: TransactionType? = TransactionType.INITIAL,
     val amount: BigDecimal?,
     val transactionDate: LocalDateTime?,
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_id", nullable = false)
-    val account: Account?
+    val account: Account
 
 ) {
     override fun equals(other: Any?): Boolean {
@@ -39,6 +39,14 @@ data class Transaction(
 
         return true
     }
+
+    constructor(amount: BigDecimal, account: Account) : this(
+        id = null,
+        amount = amount,
+        transactionDate = LocalDateTime.now(),
+        transactionType = TransactionType.INITIAL,
+        account = account
+    )
 
     override fun hashCode(): Int {
         var result = id?.hashCode() ?: 0
