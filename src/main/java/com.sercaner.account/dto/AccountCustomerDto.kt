@@ -1,7 +1,7 @@
 package com.sercaner.account.dto
 
 data class AccountCustomerDto(
-    val id: String,
-    val name: String,
-    val surname: String
+    val id: String?,
+    val name: String?,
+    val surname: String?
 )

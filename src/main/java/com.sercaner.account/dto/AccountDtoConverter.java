@@ -1,9 +1,13 @@
 package com.sercaner.account.dto;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import com.sercaner.account.model.Account;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class AccountDtoConverter {
@@ -21,7 +25,7 @@ public class AccountDtoConverter {
         return new AccountDto(from.getId(),
                 from.getBalance(),
                 from.getCreationDate(),
-                customerDtoConverter.convertToAccountCustomer(from.getCustomer()),
+                customerDtoConverter.convertToAccountCustomer(Optional.ofNullable(from.getCustomer())),
                 Objects.requireNonNull(from.getTransaction())
                         .stream()
                         .map(transactionDtoConverter::convert)
