@@ -8,13 +8,17 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import org.hibernate.annotations.GenericGenerator
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
 data class Transaction(
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    //@GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     val id: String?,
     val transactionType: TransactionType? = TransactionType.INITIAL,
     val amount: BigDecimal?,
@@ -25,6 +29,15 @@ data class Transaction(
     val account: Account
 
 ) {
+
+    constructor(amount: BigDecimal, transactionDate: LocalDateTime, account: Account) : this(
+        id = null,
+        amount = amount,
+        transactionDate = transactionDate,
+        transactionType = TransactionType.INITIAL,
+        account = account
+    )
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -40,24 +53,14 @@ data class Transaction(
         return true
     }
 
-    constructor(amount: BigDecimal, account: Account) : this(
-        id = null,
-        amount = amount,
-        transactionDate = LocalDateTime.now(),
-        transactionType = TransactionType.INITIAL,
-        account = account
-    )
-
     override fun hashCode(): Int {
         var result = id?.hashCode() ?: 0
         result = 31 * result + (transactionType?.hashCode() ?: 0)
         result = 31 * result + (amount?.hashCode() ?: 0)
         result = 31 * result + (transactionDate?.hashCode() ?: 0)
-        // result = 31 * result + (account?.hashCode() ?: 0) because was deleted transaction on account
         return result
     }
 }
-
 
 enum class TransactionType {
     INITIAL, TRANSFER

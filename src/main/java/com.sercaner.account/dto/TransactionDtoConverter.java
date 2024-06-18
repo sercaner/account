@@ -1,6 +1,8 @@
 package com.sercaner.account.dto;
 
 import com.sercaner.account.model.Transaction;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component

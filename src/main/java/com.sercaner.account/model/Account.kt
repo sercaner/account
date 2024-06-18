@@ -9,7 +9,9 @@ import java.time.LocalDateTime
 data class Account(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+   // @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     val id: String? = "",
     val balance: BigDecimal? = BigDecimal.ZERO,
     val creationDate: LocalDateTime,
@@ -19,7 +21,7 @@ data class Account(
     val customer: Customer?,
 
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     val transaction: Set<Transaction> = HashSet()
 ) {
     constructor(customer: Customer, balance: BigDecimal, creationDate: LocalDateTime) : this(
@@ -39,7 +41,6 @@ data class Account(
         if (balance != other.balance) return false
         if (creationDate != other.creationDate) return false
         if (customer != other.customer) return false
-        if (transaction != other.transaction) return false
 
         return true
     }

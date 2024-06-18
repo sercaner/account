@@ -1,23 +1,30 @@
 package com.sercaner.account.dto;
 
 import com.sercaner.account.model.Account;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
 public class CustomerAccountDtoConverter {
 
-    private final TransactionDtoConverter converter;
+    private final TransactionDtoConverter transactionDtoConverter;
 
     public CustomerAccountDtoConverter(TransactionDtoConverter converter) {
-        this.converter = converter;
+        this.transactionDtoConverter = converter;
     }
 
-    public CustomerAccountDto convert(Account from){
+    public CustomerAccountDto convert(Account from) {
         return new CustomerAccountDto(
-                from.getId(),
+                Objects.requireNonNull(from.getId()),
                 from.getBalance(),
-                from.getTransaction().stream().map(converter::convert).collect(Collectors.toSet()),
+                from.getTransaction()
+                        .stream()
+                        .map(transactionDtoConverter::convert)
+                        .collect(Collectors.toSet()),
                 from.getCreationDate());
     }
 }

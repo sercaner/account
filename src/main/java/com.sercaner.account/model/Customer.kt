@@ -6,17 +6,21 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
+import org.hibernate.annotations.GenericGenerator
 
 @Entity
 data class Customer(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+   // @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     val id: String?,
+
     val name: String?,
     val surname: String?,
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    val accounts: Set<Account>?
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    val accounts: Set<Account>
 ) {
     constructor(name: String, surname: String) : this("", name, surname, HashSet())
 
